@@ -4,12 +4,13 @@ library(tuneR)
 library(seewave) # for spectro
 library(reshape2)
 library(dplyr)
-library(purr) # for map function
+library(purrr) # for map function
 # Read in a wave dataset
-wav <- readWave("~/Documents/BYU-Idaho Classes/ML/ML-Speech-Emotion/raw data/Actor_01/03-01-01-01-01-01-01.wav")
+#wav <- readWave("~/Documents/BYU-Idaho Classes/ML/ML-Speech-Emotion/raw data/Actor_01/03-01-01-01-01-01-01.wav")
+wav <- readWave("raw data/Actor_01/03-01-01-01-01-01-01.wav")
 
-datapath <- ("~/Documents/BYU-Idaho Classes/ML/ML-Speech-Emotion/raw data/Actor_01")
-files <- dir(datapath, pattern = "*.wav")
+#datapath <- ("~/Documents/BYU-Idaho Classes/ML/ML-Speech-Emotion/raw data/Actor_01")
+#files <- dir(datapath, pattern = "*.wav")
 
 # Used this resource for help
 # https://stackoverflow.com/questions/49411154/how-can-i-get-a-dataframe-of-frequency-and-time-from-a-wav-file-in-r
