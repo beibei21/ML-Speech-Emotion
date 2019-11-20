@@ -5,6 +5,8 @@ library(seewave) # for spectro
 library(reshape2)
 library(dplyr)
 library(purrr) # for map function
+
+waveToNum <- function(fileName){
 # Read in a wave dataset
 #wav <- readWave("~/Documents/BYU-Idaho Classes/ML/ML-Speech-Emotion/raw data/Actor_01/03-01-01-01-01-01-01.wav")
 wav <- readWave("raw data/Actor_01/03-01-01-01-01-01-01.wav")
@@ -41,4 +43,7 @@ numeric_data <- amp %>%
   left_join(tm, by = "TimeIndex") %>% 
   select(Time, Frequency, Amplitude)
 
+return( numeric_data)
+}
 
+View(waveToNum("raw data/Actor_01/03-01-01-01-01-01-01.wav"))
