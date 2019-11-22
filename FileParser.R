@@ -24,7 +24,13 @@ for (folder in allFolders[-1]) {
     ### Process and Add data to file name dataframe
     data <- as.character(basename(file))
     # splits on every - or .
-    dataVector <- (strsplit(data, regex("\\-|\\.")))
+    # \\ to escape the backslash
+    # We need to get either the stuff sep by - or .
+    # | means or
+    dataVector <- sapply(strsplit(data, regex("\\-|\\.")), FUN = function(str) strtoi(str, base=10))
+    #print(dataVector1)
+    #dataVector <- strsplit(data, regex("\\-|\\."))
+    
     # drops the first two columns and last column and adds the row to the data frame
     # chop off what we don't want
     # row bind to the dataFrame
@@ -37,9 +43,7 @@ for (folder in allFolders[-1]) {
 colnames(fileData) <- c("Emotion", "intensity", "statement", "repetition" , "actor")
 # drops the first row of garbage values (our template integers)
 fileData <- fileData[-1,]
-
-# Delete this line
-
+#fileData <- as.data.frame.integer(fileData)
 
 # replae second frame with waveData
 fileData <- data.frame(c(fileData, waveData))
