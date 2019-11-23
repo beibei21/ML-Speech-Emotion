@@ -9,7 +9,10 @@ library(purrr) # for map function
 waveToNum <- function(fileName){
 # Read in a wave dataset
 #wav <- readWave("~/Documents/BYU-Idaho Classes/ML/ML-Speech-Emotion/raw data/Actor_01/03-01-01-01-01-01-01.wav")
-wav <- readWave("raw data/Actor_01/03-01-01-01-01-01-01.wav")
+wav <- readWave("raw data/Actor_02/03-01-03-02-01-01-02.wav")
+
+# gives the duration of the .wav file in time of seconds
+dur <- duration(wav)
 
 #datapath <- ("~/Documents/BYU-Idaho Classes/ML/ML-Speech-Emotion/raw data/Actor_01")
 #files <- dir(datapath, pattern = "*.wav")
@@ -41,7 +44,20 @@ tm = melt(ss$time, value.name = "Time") %>%
 numeric_data <- amp %>% 
   left_join(frequent, by = "FrequencyIndex") %>% 
   left_join(tm, by = "TimeIndex") %>% 
-  select(Time, Frequency, Amplitude)
+  select(FrequencyIndex, Time, Frequency, Amplitude) %>% 
+  filter(Time >= 1) %>% # shed first second of data
+  filter(Time <= (dur - 1)) %>% # shed last second of data
+  filter(FrequencyIndex == 20) %>% 
+  spread(key = Time, value = FrequencyIndex) %>% 
+  spread(key = Amplitude, value = FrequencyIndex)
+
+numeric_data1 <- amp %>% 
+  left_join(frequent, by = "FrequencyIndex") %>% 
+  left_join(tm, by = "TimeIndex") %>% 
+  select(FrequencyIndex, Time, Frequency, Amplitude) %>% 
+  filter(Time >= 1) %>% # shed first second of data
+  filter(Time <= (dur - 1)) %>% # shed last second of data
+  filter(FrequencyIndex == 20)
 
 return( numeric_data)
 }
