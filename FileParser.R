@@ -31,7 +31,8 @@ for (folder in allFolders[-1]) {
     fileData <- rbind(fileData, data.frame(transpose(matrix(unlist(dataVector))))[-1][-1][-6])
     
     ### Process and Add data to wave dataframe
-    }
+  }
+  break
 }
 # put meaningfull names on the columns
 colnames(fileData) <- c("Emotion", "intensity", "statement", "repetition" , "actor")
@@ -42,10 +43,13 @@ fileData <- fileData[-1,]
 
 
 # replae second frame with waveData
-fileData <- data.frame(c(fileData, waveData))
-
+#fileData <- data.frame(c(fileData, waveData))
+fileData <- transpose(as.matrix(fileData))
 View(fileData)
 
+
+#### transform line ###
+View(transpose(as.matrix(data)))
 
 
 
