@@ -14,9 +14,6 @@ wav <- readWave("raw data/Actor_02/03-01-03-02-01-01-02.wav")
 # gives the duration of the .wav file in time of seconds
 dur <- duration(wav)
 
-#datapath <- ("~/Documents/BYU-Idaho Classes/ML/ML-Speech-Emotion/raw data/Actor_01")
-#files <- dir(datapath, pattern = "*.wav")
-
 # Used this resource for help
 # https://stackoverflow.com/questions/49411154/how-can-i-get-a-dataframe-of-frequency-and-time-from-a-wav-file-in-r
 # Gives a plot of the spectro graph
@@ -47,19 +44,17 @@ numeric_data <- amp %>%
   select(FrequencyIndex, Time, Frequency, Amplitude) %>% 
   filter(Time >= 1) %>% # shed first second of data
   filter(Time <= (dur - 1)) %>% # shed last second of data
-  filter(FrequencyIndex == 20) %>% 
-  spread(key = Time, value = FrequencyIndex) %>% 
-  spread(key = Amplitude, value = FrequencyIndex)
-
-numeric_data1 <- amp %>% 
-  left_join(frequent, by = "FrequencyIndex") %>% 
-  left_join(tm, by = "TimeIndex") %>% 
-  select(FrequencyIndex, Time, Frequency, Amplitude) %>% 
-  filter(Time >= 1) %>% # shed first second of data
-  filter(Time <= (dur - 1)) %>% # shed last second of data
   filter(FrequencyIndex == 20)
 
+amp_trans <- transpose(as.matrix(numeric_data$Amplitude))
+
+freq_trans <- transpose(as.matrix(numeric_data$Frequency))
+
+
+
+
 return( numeric_data)
+
 }
 
 View(waveToNum("raw data/Actor_01/03-01-01-01-01-01-01.wav"))
