@@ -41,27 +41,23 @@ tm = melt(ss$time, value.name = "Time") %>%
 numeric_data <- amp %>% 
   left_join(frequent, by = "FrequencyIndex") %>% 
   left_join(tm, by = "TimeIndex") %>% 
-  select(Time, Frequency, Amplitude) %>% 
+  select(FrequencyIndex,Time, Frequency, Amplitude) %>% 
   filter(Time >= 1) %>% # shed first second of data
-  filter(Time <= (dur - 1))  # shed last second of data
-
+  filter(Time <= (dur - 1)) # shed last second of data
 # Get the sample of data by dividing the number of rows by 
 # 10. We don't need tons of columns, just 10
 segment <- nrow(numeric_data) / 10
 
 # 
-rows <- data.frame(rows <- sapply(1:10, FUN = function(multiple) {
+rows <- rows <- sapply(1:10, FUN = function(multiple) {
   numeric_data[round(sample(((multiple - 1) * segment + 1):(segment*multiple), size=1)),]
-}))
+})
 
-amp_trans <- transpose(as.matrix(numeric_data$Amplitude))
+row <- data.frame(rows[4,]) 
+#row <- colnames(row,prefix = "Amp")
+colnames(row) <- c("Amp1", "Amp2", "Amp3", "Amp4", "Amp5", "Amp6", "Amp7", "Amp8", "Amp9", "Amp10")
 
-freq_trans <- transpose(as.matrix(numeric_data$Frequency))
-
-
-
-
-return( numeric_data)
+return(row)
 
 }
 
