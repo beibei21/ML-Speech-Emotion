@@ -43,8 +43,7 @@ numeric_data <- amp %>%
   left_join(tm, by = "TimeIndex") %>% 
   select(FrequencyIndex, Time, Frequency, Amplitude) %>% 
   filter(Time >= 1) %>% # shed first second of data
-  filter(Time <= (dur - 1)) %>% # shed last second of data
-  filter(FrequencyIndex == 20)
+  filter(Time <= (dur - 1))  # shed last second of data
 
 amp_trans <- transpose(as.matrix(numeric_data$Amplitude))
 
