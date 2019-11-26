@@ -1,5 +1,5 @@
-library(optimbase)
-library(stringr)
+#library(optimbase)
+#library(stringr)
 
 # Load the dataset to append Columns to
 #complete_speech_dataset <- read.csv(file = "")
@@ -8,8 +8,8 @@ allFolders <- list.dirs(path = "raw data")
 
 # initialize values matches the length when adding rows
 fileData <- data.frame(2, 3, 4, 5, 6) # Our Template, for file name data
-waveData <- data.frame(2,3,3,4,5) # Our Template, for wave data
-
+#waveData <- data.frame(1,2,3,3,4,5,6,7,8,9,10) # Our Template, for wave data
+waveData <- waveToNum("raw data/Actor_01/03-01-01-01-01-01-01.wav")
 
 # works better if column names match when adding rows
 colnames(fileData) <- c("X3", "X4", "X5", "X6", "X7") # more templates
@@ -37,6 +37,8 @@ for (folder in allFolders[-1]) {
     fileData <- rbind(fileData, data.frame(transpose(matrix(unlist(dataVector))))[-1][-1][-6])
     
     ### Process and Add data to wave dataframe
+    waveData <- rbind(waveData, waveToNum(file))
+    #View(waveData)
   }
   break
 }
@@ -44,11 +46,12 @@ for (folder in allFolders[-1]) {
 colnames(fileData) <- c("Emotion", "intensity", "statement", "repetition" , "actor")
 # drops the first row of garbage values (our template integers)
 fileData <- fileData[-1,]
+waveData <- waveData[-1,]
 #fileData <- as.data.frame.integer(fileData)
 
 # replae second frame with waveData
-#fileData <- data.frame(c(fileData, waveData))
-
+fileData <- data.frame(c(fileData, waveData))
+#View(WaveData)
 View(fileData)
 
 
