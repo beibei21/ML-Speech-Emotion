@@ -5,19 +5,20 @@
 library(neuralnet)
 #library(GGally)
 
+
 build_network <- function(myData){
   # data needs to be normalized first and targets label encoded
-  
+  myData <- emotionData ### this line is for debugging perposes only ###
   # Nerual Network
   # network is a list
   # look up nerualnet:neuralnet lots of options to change
-  # - Emotion~ = col of targets
+  # - formula(myData) gives a blue print of what the data looks like, returns type formula
   # - col1 + col2 = the futures  ## I think this is mainly used for the plotting the network model
   # - hidden = # of nodes in the layer
   # - act.fct = "logistic" used for smoothing the result
   # - linear.output = True -> run act.fct False -> not run act.fct
   # - learningrate = value of learning rate used on;y for back propagation
-  network <- neuralnet(Emotion~col1+col2, data = myData, learningrate = .1, 
+  network <- neuralnet(formula(myData), data = myData, learningrate = .1, 
                        hidden = 10, act.fct = "logistic", linear.output = FALSE )
   
   # see what the network looks like
@@ -32,7 +33,10 @@ build_network <- function(myData){
   #get predictions
   predictions = compute(network, testData)
   # should print out the % for each emotion
-  probablity <- prediction$net.result
+  probablity <- predictions$net.result
   print(probablity)
-  
 }
+
+
+emotionData <- getWaveData()
+build_network(emotionData)
