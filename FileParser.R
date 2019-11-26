@@ -49,11 +49,9 @@ fileData <- fileData[-1,]
 # replae second frame with waveData
 #fileData <- data.frame(c(fileData, waveData))
 fileData <- transpose(as.matrix(fileData))
-View(fileData)
+View(fileData[1:10])
 
 
-#### transform line ###
-View(transpose(as.matrix(data)))
 
 
 
