@@ -4,6 +4,7 @@
 # Load the dataset to append Columns to
 #complete_speech_dataset <- read.csv(file = "")
 
+getWaveData <- function(){
 allFolders <- list.dirs(path = "raw data")
 
 # initialize values matches the length when adding rows
@@ -52,8 +53,8 @@ waveData <- waveData[-1,]
 # replae second frame with waveData
 fileData <- data.frame(c(fileData, waveData))
 #View(WaveData)
-View(fileData)
-
+return(fileData)
+}
 
 
 
