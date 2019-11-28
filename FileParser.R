@@ -1,5 +1,5 @@
-#library(optimbase)
-#library(stringr)
+library(optimbase)
+library(stringr)
 
 # Load the dataset to append Columns to
 #complete_speech_dataset <- read.csv(file = "")
@@ -51,7 +51,7 @@ waveData <- waveData[-1,]
 #fileData <- as.data.frame.integer(fileData)
 
 # replae second frame with waveData
-fileData <- data.frame(c(fileData, waveData))
+fileData <- data.frame(scale(as.matrix(c(fileData, waveData))))
 #View(WaveData)
 return(fileData)
 }
