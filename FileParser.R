@@ -49,14 +49,15 @@ colnames(fileData) <- c("Emotion", "intensity", "statement", "repetition" , "act
 fileData <- fileData[-1,]
 waveData <- waveData[-1,]
 #fileData <- as.data.frame.integer(fileData)
-
+fileData <- data.frame(c(fileData, waveData))
 # replae second frame with waveData
-fileData <- data.frame(scale(as.matrix(c(fileData, waveData))))
-#View(WaveData)
+#fileData <- data.frame(scale(as.matrix(c(fileData, waveData))))
+fileData <- gscale(fileData, scale.only = TRUE, vars = colnames(fileData)[-1][-4])
+View(fileData)
 return(fileData)
 }
 
 
-
+getWaveData()
 
 

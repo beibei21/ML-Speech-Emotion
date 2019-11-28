@@ -10,7 +10,7 @@ source("FileParser.R") # Run this file
 
 build_network <- function(myData){
   # data needs to be normalized first and targets label encoded
-  myData <- emotionData ### this line is for debugging perposes only ###
+  #myData <- emotionData ### this line is for debugging perposes only ###
   # Nerual Network
   # network is a list
   # look up nerualnet:neuralnet lots of options to change
@@ -22,7 +22,7 @@ build_network <- function(myData){
   # - Classification, not regression
   # - learningrate = value of learning rate used on;y for back propagation
   network <- neuralnet(formula(myData), data = myData, learningrate = .1, 
-                       hidden = c(10,10), act.fct = "logistic", linear.output = FALSE)
+                       hidden = c(10,10,8,1), act.fct = "logistic", linear.output = FALSE)
   
   # see what the network looks like
   plot(network)
@@ -43,12 +43,14 @@ build_network <- function(myData){
   accuracy <- prop.table(table(agreement))
   
   
-  
+  print(confusionMatrix)
+  print(accuracy)
   # should print out the % for each emotion
-  probablity <- predictions$net.result
-  print(probablity)
+  #probablity <- predictions$net.result
+  #print(probablity)
 }
 
 
 emotionData <- getWaveData()
+View(emotionData)
 build_network(emotionData)
