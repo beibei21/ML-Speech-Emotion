@@ -48,6 +48,17 @@ build_network <- function(myData){
   # should print out the % for each emotion
   #probablity <- predictions$net.result
   #print(probablity)
+  
+  data(myData.train, package = 'xgboost')
+  data(myData.test, package = 'xgboost')
+  
+  train <- myData.train
+  test <- myData.test
+  
+  model_xg <- xgboost(data = train$)
+  
+  
+  
 }
 
 
