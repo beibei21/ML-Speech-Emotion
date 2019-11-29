@@ -1,5 +1,6 @@
 library(optimbase)
 library(stringr)
+library(jtools)
 
 # Load the dataset to append Columns to
 #complete_speech_dataset <- read.csv(file = "")
@@ -14,11 +15,12 @@ waveData <- waveToNum("raw data/Actor_01/03-01-01-01-01-01-01.wav")
 
 # works better if column names match when adding rows
 colnames(fileData) <- c("X3", "X4", "X5", "X6", "X7") # more templates
-
+person <- 8
 # For folder in folders and file in folder
 # Loop through all folders except the first one (which is "raw data")
 # Subtract it out
 # Create two data frames: 1 for the wave data, 1 for the file name data
+stopNow <- FALSE
 for (folder in allFolders[-1]) {
   print(basename(folder))
   for (file in list.files(path = folder, pattern = "*.wav")) {
@@ -32,6 +34,15 @@ for (folder in allFolders[-1]) {
     #print(dataVector1)
     #dataVector <- strsplit(data, regex("\\-|\\."))
     
+    # Turn the actor into a gender (male/female)
+    # Odd Number  - Male
+    # Even Number - Female
+    # The actor is second to last in the vector
+    dataVector[7] <- case_when(
+      dataVector[7] %% 2 == 1 ~ 1, # 1 for male
+      TRUE ~ 0                     # 0 for female
+      ) 
+    
     # drops the first two columns and last column and adds the row to the data frame
     # chop off what we don't want
     # row bind to the dataFrame
@@ -41,10 +52,15 @@ for (folder in allFolders[-1]) {
     waveData <- rbind(waveData, waveToNum(file))
     #View(waveData)
   }
-  break
+  if (person == 1) {
+    break
+  }
+  else {
+    person <- person - 1
+  }
 }
 # put meaningfull names on the columns
-colnames(fileData) <- c("Emotion", "intensity", "statement", "repetition" , "actor")
+colnames(fileData) <- c("Emotion", "intensity", "statement", "repetition" , "gender")
 # drops the first row of garbage values (our template integers)
 fileData <- fileData[-1,]
 waveData <- waveData[-1,]
@@ -52,12 +68,14 @@ waveData <- waveData[-1,]
 fileData <- data.frame(c(fileData, waveData))
 # replae second frame with waveData
 #fileData <- data.frame(scale(as.matrix(c(fileData, waveData))))
-fileData <- gscale(fileData, scale.only = TRUE, vars = colnames(fileData)[-1][-4])
+# Don't scale the emotion or actor (column 1 and 4)
+# Scale.only = true means scale between -1 to 1
+fileData <- gscale(fileData, scale.only = TRUE, vars = colnames(fileData)[-1])
 View(fileData)
 return(fileData)
 }
 
 
-getWaveData()
+#getWaveData()
 
 
