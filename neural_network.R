@@ -44,8 +44,9 @@ build_network <- function(myData){
   agreement <- predictions == testData$Emotion
   accuracy <- prop.table(table(agreement))
   
-  
   print(confusionMatrix)
+  View(confusionMatrix)
+  View(accuracy)
   print(accuracy)
   # should print out the % for each emotion
   #probablity <- predictions$net.result
