@@ -38,10 +38,11 @@ for (folder in allFolders[-1]) {
     # Odd Number  - Male
     # Even Number - Female
     # The actor is second to last in the vector
-    dataVector[7] <- case_when(
-      dataVector[7] %% 2 == 1 ~ 1, # 1 for male
-      TRUE ~ 0                     # 0 for female
-      ) 
+    # Actually, instead of returning a the result of a 
+    # case_when(dataVector[7] %% 2 == 1 ~ 1, TRUE ~ 0)
+    # we can just mod by 2. The result, whether 1 or 0, will differentiate the gender
+    # for us, based on the rules above
+    dataVector[7] <- dataVector[7] %% 2 # 0 or 1 differentiation
     
     # drops the first two columns and last column and adds the row to the data frame
     # chop off what we don't want
@@ -49,14 +50,17 @@ for (folder in allFolders[-1]) {
     fileData <- rbind(fileData, data.frame(transpose(matrix(unlist(dataVector))))[-1][-1][-6])
     
     ### Process and Add data to wave dataframe
+    ## This binds all of the waveToNum processing for a file to the old waveData data frame
+    ## Which we will merge with the fileData after looping
     waveData <- rbind(waveData, waveToNum(file))
     #View(waveData)
   }
+  # A control structure to make sure we only loop through 8 people (8 loops)
   if (person == 1) {
-    break
+    break # we're done with 8 actors
   }
   else {
-    person <- person - 1
+    person <- person - 1 # Decrement the person down to 1
   }
 }
 # put meaningfull names on the columns
@@ -65,17 +69,14 @@ colnames(fileData) <- c("Emotion", "intensity", "statement", "repetition" , "gen
 fileData <- fileData[-1,]
 waveData <- waveData[-1,]
 #fileData <- as.data.frame.integer(fileData)
-fileData <- data.frame(c(fileData, waveData))
+combinedDataSet <- data.frame(c(fileData, waveData))
 # replae second frame with waveData
 #fileData <- data.frame(scale(as.matrix(c(fileData, waveData))))
-# Don't scale the emotion or actor (column 1 and 4)
+# Don't scale the emotion (column 1)
 # Scale.only = true means scale between -1 to 1
-fileData <- gscale(fileData, scale.only = TRUE, vars = colnames(fileData)[-1])
-View(fileData)
-return(fileData)
+combinedDataSet <- gscale(combinedDataSet, scale.only = TRUE, vars = colnames(combinedDataSet)[-1])
+View(combinedDataSet)
+return(combinedDataSet)
 }
-
-
-#getWaveData()
 
 
