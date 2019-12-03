@@ -48,11 +48,14 @@ numeric_data <- amp %>%
 # 10. We don't need tons of columns, just 10
 segment <- nrow(numeric_data) / 10
 
-# 
+# Randomly sample from 10 equi sections  
 rows <- rows <- sapply(1:10, FUN = function(multiple) {
   numeric_data[round(sample(((multiple - 1) * segment + 1):(segment*multiple), size=1)),]
 })
 
+# Quote from Joe Armstrong about seven deadly sins (coding sins):
+# No comments in the code. You can't understand it. No specification. Very obscure. Etc...
+# That's how I feel ;) haha! Please explain what the 4 means.
 row <- data.frame(rows[4,]) 
 #row <- colnames(row,prefix = "Amp")
 colnames(row) <- c("Amp1", "Amp2", "Amp3", "Amp4", "Amp5", "Amp6", "Amp7", "Amp8", "Amp9", "Amp10")
