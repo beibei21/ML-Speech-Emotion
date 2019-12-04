@@ -29,7 +29,7 @@ build_network <- function(myData){
   # - Classification, not regression
   # - learningrate = value of learning rate used on;y for back propagation
   network <- neuralnet(formula(trainData), data = trainData, learningrate = .1, 
-                       hidden = c(10,10,8,1), act.fct = "logistic", linear.output = FALSE)
+                       hidden = c(10,10,8,1), linear.output = FALSE)
   
   # see what the network looks like
   #plot(network)
@@ -38,6 +38,7 @@ build_network <- function(myData){
   #get predictions
   predictions = predict(network, testData[,-1]) # remove the emotion
   #table(testData$Emotion, apply(predictions, 1, which.max))
+  
   
   confusionMatrix <- table(pred = predictions, true = testData$Emotion)
   
