@@ -24,6 +24,7 @@ testData <- myData[testRows,]
 trainData <- myData[-testRows]
 
 # building model
+### type = "raw" -> gives the % for each emotions; by default it will preidict just one emotion
 NBModel = naiveBayes(formula(myData), data = myData, type = "raw")
 print(NBModel)
 
