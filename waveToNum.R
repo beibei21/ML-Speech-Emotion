@@ -6,10 +6,10 @@ library(reshape2)
 library(dplyr)
 library(purrr) # for map function
 
-waveToNum <- function(fileName){
+waveToNum <- function(folder, fileName){
 # Read in a wave dataset
 #wav <- readWave("~/Documents/BYU-Idaho Classes/ML/ML-Speech-Emotion/raw data/Actor_01/03-01-01-01-01-01-01.wav")
-wav <- readWave(fileName)
+wav <- readWave(paste("raw data", folder, fileName, sep = "/"))
 
 # gives the duration of the .wav file in time of seconds
 dur <- duration(wav)
@@ -56,7 +56,9 @@ rows <- rows <- sapply(1:10, FUN = function(multiple) {
 # Quote from Joe Armstrong about seven deadly sins (coding sins):
 # No comments in the code. You can't understand it. No specification. Very obscure. Etc...
 # That's how I feel ;) haha! Please explain what the 4 means.
-row <- data.frame(rows[4,]) 
+# We only want the amplitude, which is in row 4 of all columns
+# This is the comment
+row <- data.frame(rows[4,]) # Only take amplitude, row 4
 #row <- colnames(row,prefix = "Amp")
 colnames(row) <- c("Amp1", "Amp2", "Amp3", "Amp4", "Amp5", "Amp6", "Amp7", "Amp8", "Amp9", "Amp10")
 

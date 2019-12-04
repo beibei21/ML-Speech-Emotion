@@ -11,7 +11,9 @@ allFolders <- list.dirs(path = "raw data")
 # initialize values matches the length when adding rows
 fileData <- data.frame(2, 3, 4, 5, 6) # Our Template, for file name data
 #waveData <- data.frame(1,2,3,3,4,5,6,7,8,9,10) # Our Template, for wave data
-waveData <- waveToNum("raw data/Actor_01/03-01-01-01-01-01-01.wav")
+# We need to originally create a default dataframe
+# But this 
+waveData <- waveToNum("Actor_01", "03-01-01-01-01-01-01.wav")
 
 # works better if column names match when adding rows
 colnames(fileData) <- c("X3", "X4", "X5", "X6", "X7") # more templates
@@ -52,7 +54,7 @@ for (folder in allFolders[-1]) {
     ### Process and Add data to wave dataframe
     ## This binds all of the waveToNum processing for a file to the old waveData data frame
     ## Which we will merge with the fileData after looping
-    waveData <- rbind(waveData, waveToNum(file))
+    waveData <- rbind(waveData, waveToNum(basename(folder), file))
     #View(waveData)
   }
   # A control structure to make sure we only loop through 8 people (8 loops)
