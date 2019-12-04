@@ -29,7 +29,7 @@ NBModel = naiveBayes(formula(myData), data = myData, type = "raw")
 print(NBModel)
 
 # making predictions
-predictions = predict(NBModel, testData, type= "raw ")
+predictions = predict(NBModel, testData, type= "raw")
 print(predictions)
 
 ### This is bad that I have to do this ###
@@ -39,6 +39,7 @@ predictionsTrue <- sapply(1:length(testData$Emotion), FUN = function(index) {
   which.max(as.matrix(predictions[index,]))
 })
 
+# look at the predictions and the class of the test data
 print(predictionsTrue)
 print(testData$Emotion)
 
