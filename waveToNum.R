@@ -9,7 +9,7 @@ library(purrr) # for map function
 waveToNum <- function(fileName){
 # Read in a wave dataset
 #wav <- readWave("~/Documents/BYU-Idaho Classes/ML/ML-Speech-Emotion/raw data/Actor_01/03-01-01-01-01-01-01.wav")
-wav <- readWave("raw data/Actor_02/03-01-03-02-01-01-02.wav")
+wav <- readWave(fileName)
 
 # gives the duration of the .wav file in time of seconds
 dur <- duration(wav)
