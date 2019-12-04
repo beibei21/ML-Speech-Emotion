@@ -49,7 +49,13 @@ for (folder in allFolders[-1]) {
     # case_when(dataVector[7] %% 2 == 1 ~ 1, TRUE ~ 0)
     # we can just mod by 2. The result, whether 1 or 0, will differentiate the gender
     # for us, based on the rules above
-    dataVector[7] <- dataVector[7] %% 2 # 0 or 1 differentiation
+    # Actually, if the data is just 0 or 1, write.csv() might
+    # Save it as Inf.... so dumb. So save it as a string. gscale() will
+    # Still convert it from -1 to 1.
+    dataVector[7] <- 
+      case_when(dataVector[7] %% 2 == 1 ~ "male",
+                TRUE ~ "female"
+                )# 0 or 1 differentiation
     
     # drops the first two columns and last column and adds the row to the data frame
     # chop off what we don't want

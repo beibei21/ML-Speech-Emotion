@@ -8,12 +8,16 @@ source("FileParser.R")
 
 # Prepare the data in this one line
 # 1 person for now
-myData <- getWaveData(person = 1) # ta da
+prepareData <- function(person = 24) {
+  myData <- getWaveData(person) # ta da
+  # Now save the whole data frame to a file: emotion.csv
+  # col.names = TRUE is set by default. We want the colnames but not the row names
+  # The row names will just be 1,2,3,4,... useless.
+  write.csv(myData, "emotion.csv", na = "NA", row.names = FALSE) # give it the dataframe
+  myData
+}
 
-# Now save the whole data frame to a file: emotion.csv
-# col.names = TRUE is set by default. We want the colnames but not the row names
-# The row names will just be 1,2,3,4,... useless.
-write.csv(myData, "emotion.csv", na = "NA", row.names = FALSE) # give it the dataframe
-
-data <- read.csv("emotion.csv")
+getData <- function() {
+  read.csv("emotion.csv")
+}
 
