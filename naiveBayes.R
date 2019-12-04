@@ -19,17 +19,18 @@ myData = getWaveData()
 
 # get test data and train data
 numRows = 1:nrow(myData) 
-testRows <- sample(numRows, trunc(length(numRows)* 0.3))
+testRows <- sample(numRows, trunc(length(numRows) * 0.3))
 testData <- myData[testRows,]
 trainData <- myData[-testRows]
 
 # building model
 ### type = "raw" -> gives the % for each emotions; by default it will preidict just one emotion
-NBModel = naiveBayes(formula(myData), data = myData, type = "raw")
+NBModel = naiveBayes(formula(myData), data = myData, 
+                     type = "raw", laplace = 3)
 print(NBModel)
 
 # making predictions
-predictions = predict(NBModel, testData, type= "raw")
+predictions = predict(NBModel, testData, type = "raw", threshold = 0.01)
 print(predictions)
 
 ### This is bad that I have to do this ###
@@ -54,3 +55,6 @@ print(accuracy)
 # 
 # agreement <- predictions == testData$Emotion
 # accuracy <- prop.table(table(agreement))
+
+
+
