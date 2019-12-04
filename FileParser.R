@@ -3,26 +3,25 @@ library(stringr)
 library(jtools)
 
 # Load the dataset to append Columns to
-#complete_speech_dataset <- read.csv(file = "")
-
-getWaveData <- function(){
+# optionally receive the number of persons to run, else run all
+# all 24 actors
+# useful for debugging
+getWaveData <- function(person = 24){
 allFolders <- list.dirs(path = "raw data")
 
 # initialize values matches the length when adding rows
 fileData <- data.frame(2, 3, 4, 5, 6) # Our Template, for file name data
 #waveData <- data.frame(1,2,3,3,4,5,6,7,8,9,10) # Our Template, for wave data
 # We need to originally create a default dataframe
-# But this 
-waveData <- waveToNum("Actor_01", "03-01-01-01-01-01-01.wav")
-
+# But this is garbage, for now we don't know an easier way
+waveData <- data.frame(c(1,2,3,4,5,6,7,8,9,10))
+            #waveToNum("Actor_01", "03-01-01-01-01-01-01.wav")
 # works better if column names match when adding rows
 colnames(fileData) <- c("X3", "X4", "X5", "X6", "X7") # more templates
-person <- 8
 # For folder in folders and file in folder
 # Loop through all folders except the first one (which is "raw data")
 # Subtract it out
 # Create two data frames: 1 for the wave data, 1 for the file name data
-stopNow <- FALSE
 for (folder in allFolders[-1]) {
   print(basename(folder))
   for (file in list.files(path = folder, pattern = "*.wav")) {
@@ -32,6 +31,8 @@ for (folder in allFolders[-1]) {
     # \\ to escape the backslash
     # We need to get either the stuff sep by - or .
     # | means or
+    # We have integers in base 10. Let's specify.
+    # Convert the strings to integers
     dataVector <- sapply(strsplit(data, regex("\\-|\\.")), FUN = function(str) strtoi(str, base=10))
     #print(dataVector1)
     #dataVector <- strsplit(data, regex("\\-|\\."))
