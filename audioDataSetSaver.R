@@ -7,6 +7,8 @@ source("waveToNum.R")
 source("FileParser.R")
 
 # Prepare the data in this one line
+# 1 person for now
 myData <- getWaveData(person = 1) # ta da
 
-
+# Now save the whole data frame to a file: emotion.csv
+write.csv(myData, "emotion.csv") # give it the dataframe

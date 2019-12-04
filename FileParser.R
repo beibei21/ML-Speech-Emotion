@@ -7,15 +7,19 @@ library(jtools)
 # all 24 actors
 # useful for debugging
 getWaveData <- function(person = 24){
+if (person <= 0 || person > 24) {
+  print("Error, person amount must be in range: 1-24")
+  return(NULL) # nothing!
+}
 allFolders <- list.dirs(path = "raw data")
 
 # initialize values matches the length when adding rows
-fileData <- data.frame(2, 3, 4, 5, 6) # Our Template, for file name data
+fileData <- data.frame(1,2,3,4,5) # Our Template, for file name data
 #waveData <- data.frame(1,2,3,3,4,5,6,7,8,9,10) # Our Template, for wave data
 # We need to originally create a default dataframe
 # But this is garbage, for now we don't know an easier way
-waveData <- data.frame(c(1,2,3,4,5,6,7,8,9,10))
-            #waveToNum("Actor_01", "03-01-01-01-01-01-01.wav")
+#waveData <- data.frame(c(1,2,3,4,5,6,7,8,9,10))
+waveData <- waveToNum("Actor_01", "03-01-01-01-01-01-01.wav")
 # works better if column names match when adding rows
 colnames(fileData) <- c("X3", "X4", "X5", "X6", "X7") # more templates
 # For folder in folders and file in folder
@@ -67,7 +71,8 @@ for (folder in allFolders[-1]) {
   }
 }
 # put meaningfull names on the columns
-colnames(fileData) <- c("Emotion", "intensity", "statement", "repetition" , "gender")
+colnames(fileData) <- c("emotion", "intensity", "statement", "repetition" , "gender")
+
 # drops the first row of garbage values (our template integers)
 fileData <- fileData[-1,]
 waveData <- waveData[-1,]

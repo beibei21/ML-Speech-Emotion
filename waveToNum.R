@@ -60,6 +60,8 @@ rows <- rows <- sapply(1:10, FUN = function(multiple) {
 # This is the comment
 row <- data.frame(rows[4,]) # Only take amplitude, row 4
 #row <- colnames(row,prefix = "Amp")
+# Give this row meaningful column names so they will match
+# the dataframe we will bind this row to in FileParser.R
 colnames(row) <- c("Amp1", "Amp2", "Amp3", "Amp4", "Amp5", "Amp6", "Amp7", "Amp8", "Amp9", "Amp10")
 
 return(row)
