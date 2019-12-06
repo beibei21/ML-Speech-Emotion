@@ -34,8 +34,19 @@ print(formula(trainData))
 #
 classifier = svm(formula = formula(trainData), 
                  data = trainData, 
-                 type = 'nu-classification', 
-                 kernel = 'radial') 
+                 type = 'C-classification', 
+                 kernel = 'sigmoid', 
+                 gamma = .5, 
+                 cost = 4) 
+
+obj <- tune(svm, emotion~., data = trainData, 
+            ranges = list(gamma = 2^(-1:1), cost = 2^(2:4), nu = seq(0.01,0.5, .1),
+            tunecontrol = tune.control(sampling = "fix")))
+
+
+
+summary(obj)
+plot(obj)
 
 y_pred = predict(classifier, newdata = testData[-1])
 
