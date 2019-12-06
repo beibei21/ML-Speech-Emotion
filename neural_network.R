@@ -9,7 +9,6 @@ source("audioDataSetSaver.R") # Run this file
 #library(GGally)
 
 # data needs to be normalized first and targets label encoded
-#prepareData(8)
 myData = getData() ### this line is for debugging perposes only ###
 
 # get test data and train data
