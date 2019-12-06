@@ -26,12 +26,16 @@ print(formula(trainData))
 
 
 
+### use hyper parameters
+
+
 # type 'nu-classification' or ' C-classification'
-#kernel 'linear', 'polynomial', 'sigmoid', 'radial' 
+# kernel 'linear', 'polynomial', 'sigmoid', 'radial' 
+#
 classifier = svm(formula = formula(trainData), 
                  data = trainData, 
                  type = 'nu-classification', 
-                 kernel = 'sigmoid') 
+                 kernel = 'radial') 
 
 y_pred = predict(classifier, newdata = testData[-1])
 
