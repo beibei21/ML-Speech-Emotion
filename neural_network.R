@@ -5,16 +5,17 @@
 library(neuralnet)
 source("waveToNum.R")  # Run this file
 source("FileParser.R") # Run this file
+source("audioDataSetSaver.R") # Run this file
 #library(GGally)
 
 # data needs to be normalized first and targets label encoded
-myData <- emotionData ### this line is for debugging perposes only ###
+myData = getData() ### this line is for debugging perposes only ###
 
 # get test data and train data
 numRows = 1:nrow(myData) 
 testRows <- sample(numRows, trunc(length(numRows)* 0.3))
 testData <- myData[testRows,]
-trainData <- myData[-testRows]
+trainData <- myData[-testRows,]
 
 # Nerual Network
 # network is a list
@@ -27,10 +28,10 @@ trainData <- myData[-testRows]
 # - Classification, not regression
 # - learningrate = value of learning rate used on;y for back propagation
 network <- neuralnet(formula(trainData), data = trainData, learningrate = .1, 
-                     hidden = c(10,10,8,1), linear.output = FALSE)
+                     hidden = c(15,10,8), linear.output = FALSE)
 
 # see what the network looks like
-#plot(network)
+plot(network)
 
 
 #get predictions
