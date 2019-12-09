@@ -23,8 +23,8 @@ prepareData <- function(person = 24, call1 = TRUE, slice = 10) {
   myData
 }
 
-getData <- function() {
-  read.csv("emotion.csv")
+getData <- function(fileName = emotion.csv) {
+  read.csv("fileName")
   # Hello
 }
 
