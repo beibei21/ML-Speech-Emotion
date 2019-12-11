@@ -11,8 +11,11 @@ source("audioDataSetSaver.R") # Run this file
 # https://www.geeksforgeeks.org/classifying-data-using-support-vector-machinessvms-in-r/
 
 # Get the data 
-myData = getData("emotion_all.csv")
+myData <- getData("emotion_all.csv")
+SVMTypes <- c("C-classification", "nu-classification")
+kernal <- c('linear', 'polynomial', 'sigmoid', 'radial')
 
+#### we want to go through all combinations on pair two emotions together and print out the best accurracy pair ###
 
 # # the following are to encode the emotions to 2 emotions
 # # Emotion 1 will be happy comprised of neutral, calm, happy, surprised
@@ -69,14 +72,14 @@ classifier = svm(formula = formula(trainData),
                  gamma = .5, 
                  cost = 4) 
 
-obj <- tune(svm, emotion~., data = trainData, 
-            ranges = list(gamma = 2^(-1:1), cost = 2^(2:4), nu = seq(0.01,0.5, .1),
-            tunecontrol = tune.control(sampling = "fix")))
+# obj <- tune(svm, emotion~., data = trainData, 
+#             ranges = list(gamma = 2^(-1:1), cost = 2^(2:4), nu = seq(0.01,0.5, .1),
+#             tunecontrol = tune.control(sampling = "fix")))
 
 
 
-summary(obj)
-plot(obj)
+# summary(obj)
+# plot(obj)
 
 y_pred = predict(classifier, newdata = testData[-1])
 

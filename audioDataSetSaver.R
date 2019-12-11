@@ -38,6 +38,8 @@ combineSaveDatasets <- function(filename = "emotion_extended.csv", people = NULL
     files <- list.files(pattern = "*[0-91-9].csv")
     # We need rows to bind to. Process the first file
     fullDatasetBuild <- getData(files[1]) # for our template
+    print(paste("Started processing", files[1], "dataset to fullDataset"))
+    
     for(file in files[-1]) # we already processed the first file
     {
       # Declare a toBind dataset to get the intersection of
@@ -45,11 +47,10 @@ combineSaveDatasets <- function(filename = "emotion_extended.csv", people = NULL
       # Get the columns that they agree on
       common_cols <- intersect(colnames(fullDatasetBuild), colnames(toBind))
       print("Determined Col Intersection")
-      # Now bind to the waveData the toBind data only those columns that are common
-      waveData <- rbind(fullDatasetBuild[,common_cols], toBind[,common_cols])
-      print("Bounded dataset to fullDataset")
+      # Now bind to the fullDatasetBuild the toBind data only those columns that are common
+      fullDatasetBuild <- rbind(fullDatasetBuild[,common_cols], toBind[,common_cols])
+      print(paste("Bounded", file, "dataset to fullDataset"))
     }
-    
   }
   else { # process each actor from the people vector
     # We need rows to bind to. Process the first file
@@ -73,6 +74,7 @@ combineSaveDatasets <- function(filename = "emotion_extended.csv", people = NULL
                       people[1],
                       ".csv", sep="")
     fullDatasetBuild <- getData(file) # for our template
+    print(paste("Started processing", file, "dataset to fullDataset"))
     for (actor in people[-1]) { # subtract the first actor out. We already processed its data
       
       # Concat the "emotion_Actor_*" string with the actor ID to get the correct
@@ -99,9 +101,9 @@ combineSaveDatasets <- function(filename = "emotion_extended.csv", people = NULL
       # Get the columns that they agree on
       common_cols <- intersect(colnames(fullDatasetBuild), colnames(toBind))
       print("Determined Col Intersection")
-      # Now bind to the waveData the toBind data only those columns that are common
-      waveData <- rbind(fullDatasetBuild[,common_cols], toBind[,common_cols])
-      print("Bounded dataset to fullDataset")
+      # Now bind to the fullDatasetBuild the toBind data only those columns that are common
+      fullDatasetBuild <- rbind(fullDatasetBuild[,common_cols], toBind[,common_cols])
+      print(paste("Bounded", file, "dataset to fullDataset"))
     }
   }
   write.csv(x=fullDatasetBuild, file=filename, na="NA", row.names=FALSE)
@@ -132,5 +134,67 @@ saveFile <- function(data, actor) {
   # The row names will just be 1,2,3,4,... useless.
   write.csv(x = data, file = filename, na = "NA", row.names = FALSE)# give it the dataframe
   TRUE # it worked
+}
+
+joinFileDatasets <- function(files = NULL, filetowrite, pattern = NULL) {
+  # Favor the pattern default variable
+  if (!is.null(pattern)) {
+    print("Given pattern")
+    files <- list.files(pattern = pattern)
+    # We need rows to bind to. Process the first file
+    # We need rows to bind to. Process the first file
+    fullDatasetBuild <- getData(files[1]) # for our template
+    print(paste("Started processing", files[1], "dataset to fullDataset"))
+    for(file in files[-1]) # we already processed the first file
+    {
+      # Declare a toBind dataset to get the intersection of
+      toBind <- getData(file)
+      # Get the columns that they agree on
+      common_cols <- intersect(colnames(fullDatasetBuild), colnames(toBind))
+      print("Determined Col Intersection")
+      # Now bind to the fullDatasetBuild the toBind data only those columns that are common
+      fullDatasetBuild <- rbind(fullDatasetBuild[,common_cols], toBind[,common_cols])
+      print(paste("Bounded", file, "dataset to fullDataset"))
+    }
+  }
+  else if (!is.null(files)) {
+    print("Given files")
+    # We need rows to bind to. Process the first file
+    # We need rows to bind to. Process the first file
+    fullDatasetBuild <- getData(files[1]) # for our template
+    print(paste("Started processing", files[1], "dataset to fullDataset"))
+    for(file in files[-1]) # we already processed the first file
+    {
+      # Declare a toBind dataset to get the intersection of
+      toBind <- getData(file)
+      # Get the columns that they agree on
+      common_cols <- intersect(colnames(fullDatasetBuild), colnames(toBind))
+      print("Determined Col Intersection")
+      # Now bind to the fullDatasetBuild the toBind data only those columns that are common
+      fullDatasetBuild <- rbind(fullDatasetBuild[,common_cols], toBind[,common_cols])
+      print(paste("Bounded", file, "dataset to fullDataset"))
+    }
+  }
+  else {
+    files <- list.files(pattern = "emotion_Actor_(.*).csv")
+    print("Given no files or pattern")
+    # We need rows to bind to. Process the first file
+    # We need rows to bind to. Process the first file
+    fullDatasetBuild <- getData(files[1]) # for our template
+    print(paste("Started processing", files[1], "dataset to fullDataset"))
+    for(file in files[-1]) # we already processed the first file
+    {
+      # Declare a toBind dataset to get the intersection of
+      toBind <- getData(file)
+      # Get the columns that they agree on
+      common_cols <- intersect(colnames(fullDatasetBuild), colnames(toBind))
+      print("Determined Col Intersection")
+      # Now bind to the fullDatasetBuild the toBind data only those columns that are common
+      fullDatasetBuild <- rbind(fullDatasetBuild[,common_cols], toBind[,common_cols])
+      print(paste("Bounded", file, "dataset to fullDataset"))
+    }
+  }
+  write.csv(x=fullDatasetBuild, file=filetowrite, na="NA", row.names=FALSE)
+  fullDatasetBuild
 }
 

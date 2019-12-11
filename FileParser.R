@@ -15,7 +15,7 @@ library(jtools)
 # saveIncrementally handles whether or not we should save the data for an actor to 
 # a unique file for that actor each time we loop through an actor's folder or 
 # only save in the audioDataSetSaver
-getWaveData <- function(people = NULL, actor = 1, actorEnd = 24, saveIncrementally = FALSE, waveFunToCall = waveToNum, slice = 100){
+getWaveData <- function(people = NULL, actor = 1, actorEnd = 24, saveIncrementally = FALSE, waveFunToCall = waveToNum, slice = 50){
   # Make sure numActors to run was not greater than our limit
   if (actorEnd <= 0 || actorEnd > 24) {
     print("Error, number of actors must be in range: 1-24")
