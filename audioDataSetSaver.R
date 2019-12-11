@@ -41,7 +41,7 @@ prepareData <- function(people = NULL, actor = 1, actorEnd = 24, filename = "emo
   }
 }
 
-getData <- function(filename = "emotion.csv") {
+getData <- function(filename = "emotion_extended.csv") {
   read.csv(filename)
 }
 
