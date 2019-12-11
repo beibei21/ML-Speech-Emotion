@@ -214,3 +214,23 @@ joinFileDatasets <- function(files = NULL, filetowrite, pattern = NULL) {
   fullDatasetBuild
 }
 
+numericallyEncode <- function(data) {
+  # get a column list from 1 to the number of cols
+  cols <- 1:ncol(data)
+  # For every column, see if it has numeric data and scale it
+  for (col in cols) {
+    # See if the data in this column is numeric
+    if (!is.numeric(data[,col])) {# if not, scale
+      print(paste("Scaling column: ", col))
+      # vars = colnames() is the columns to scale. We only should scale this column.
+      data[,col] <- gscale(data = data, scale.only = TRUE, vars = colnames(data[,col])) # only scale this one column
+    }
+  }
+  data # return the data
+}
+  
+  
+  
+  
+  
+
