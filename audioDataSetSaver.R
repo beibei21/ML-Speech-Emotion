@@ -8,7 +8,7 @@ source("FileParser.R")
 
 # Prepare the data in this one line
 # 1 person for now
-prepareData <- function(people = NULL, actor = 1, actorEnd = 24, filename = "emotion.csv", call1 = TRUE, saveIncrementally = FALSE, slice = 10) {
+prepareData <- function(people = NULL, actor = 1, actorEnd = 24, filename = "emotion.csv", call1 = TRUE, saveIncrementally = FALSE, slice = 50) {
   ## Define a lambda to pass to the getWave function
   if (!call1) {
     waveFunToCall = waveToNumWithSlicesAdded
@@ -16,13 +16,29 @@ prepareData <- function(people = NULL, actor = 1, actorEnd = 24, filename = "emo
     waveFunToCall = waveToNum
   }
   
-  myData <- getWaveData(people = people, actor = actor, actorEnd = actorEnd, saveIncrementally = saveIncrementally, waveFunToCall = waveFunToCall, slice = slice) # ta da
-  
-  # Now save the whole data frame to a file: emotion.csv
-  # col.names = TRUE is set by default. We want the colnames but not the row names
-  # The row names will just be 1,2,3,4,... useless.
-  write.csv(x = myData, file = filename, na = "NA", row.names = FALSE) # give it the dataframe
-  myData
+  if (!saveIncrementally) {
+    myData <- getWaveData(people = people, actor = actor, actorEnd = actorEnd, saveIncrementally = saveIncrementally, waveFunToCall = waveFunToCall, slice = slice) # ta da
+    
+    # Now save the whole data frame to a file: emotion.csv
+    # col.names = TRUE is set by default. We want the colnames but not the row names
+    # The row names will just be 1,2,3,4,... useless.
+    write.csv(x = myData, file = filename, na = "NA", row.names = FALSE) # give it the dataframe
+    return(myData)  
+  }
+  else {
+    if(getWaveData(people = people, actor = actor, actorEnd = actorEnd, saveIncrementally = saveIncrementally, waveFunToCall = waveFunToCall, slice = slice)) { # ta da
+      print("Successfully saved separately")  
+      # Now save the whole data frame to a file: emotion.csv
+      # col.names = TRUE is set by default. We want the colnames but not the row names
+      # The row names will just be 1,2,3,4,... useless.
+      write.csv(x = myData, file = filename, na = "NA", row.names = FALSE) # give it the dataframe
+      return(TRUE)
+    }
+    else {
+      print("Failed to save incrementally")
+      return(FALSE)
+    }
+  }
 }
 
 getData <- function(filename = "emotion.csv") {
@@ -35,7 +51,7 @@ combineSaveDatasets <- function(filename = "emotion_extended.csv", people = NULL
   if (is.null(people)) {
     # Give the pattern regex any characters leading up to
     # the last two digits (0-9 and 1-9) with the .csv extension
-    files <- list.files(pattern = "*[0-91-9].csv")
+    files <- list.files(pattern = "*_[0-9][1-9].csv") # underscore so we avoid any other file other than _(actorID).csv
     # We need rows to bind to. Process the first file
     fullDatasetBuild <- getData(files[1]) # for our template
     print(paste("Started processing", files[1], "dataset to fullDataset"))

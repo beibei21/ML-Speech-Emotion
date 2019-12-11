@@ -31,7 +31,7 @@ getWaveData <- function(people = NULL, actor = 1, actorEnd = 24, saveIncremental
   # to loop through based on the actors the people list wants
   if (!is.null(people)) { # Then process each actor in the list
     # Override whatever silly number the user gave for actor, they want
-    # the actor id to process from the people vector they gave us!
+    # the actor id to process from th e people vector they gave us!
     actor <- people[1] # This is so we can generate our template
     # We also don't care about the number of actors to loop through
     # If they gave us a list of actors to loop through!
@@ -264,7 +264,7 @@ getWaveData <- function(people = NULL, actor = 1, actorEnd = 24, saveIncremental
       # Before we forget, set first to true again, this will be the first file we process
       first <- TRUE
       ## Don't get another template if we are out of actors
-      if (actor > actorEnd && actor > people[length(people)]) {
+      if (actor > actorEnd && !is.null(people) && actor > people[length(people)]) {
         break # stop this loop and processing right now
       }
       
