@@ -5,7 +5,7 @@ library(caret)
 #source("waveToNum.R")  # Run this file
 #source("FileParser.R") # Run this file
 source("audioDataSetSaver.R") # Run this file
-library(tuple)
+
 
 # Helpful tutorials 
 
@@ -13,8 +13,8 @@ library(tuple)
 
 # Get the data 
 myData <- getData("emotion_all.csv")
-SVMTypes <- c("C-classification", "nu-classification")
-kernals <- c('linear', 'polynomial', 'sigmoid', 'radial')
+SVMTypes <- c("C-classification")
+kernels <- c('linear', 'polynomial', 'sigmoid', 'radial')
 results <- vector()
 
 numbers <- c(1:8)
@@ -29,10 +29,13 @@ testRows <- sample(numRows, trunc(length(numRows) * 0.3))
 testData <- myData[testRows,]
 trainData <- myData[-testRows,]
 
+print(pair_of_emotions)
 # another for loop for the SVM Types
 
   for (type in SVMTypes) {
-    for (kernal in kernals) {
+    for (kernel in kernels) {
+      print(type)
+      print(kernel)
       # type 'nu-classification' or ' C-classification'
       # kernel 'linear', 'polynomial', 'sigmoid', 'radial' 
       #
@@ -46,7 +49,8 @@ trainData <- myData[-testRows,]
                        gamma = .5, 
                        cost = 4) 
     
-    
+    print("stop")
+
     y_pred = predict(classifier, newdata = testData[-1])
     
     
@@ -59,12 +63,12 @@ trainData <- myData[-testRows,]
     # accuracy is value (sorted on accuracy)
     # map
     results <- append(results, c(pair_of_emotions[1], pair_of_emotions[2], type, kernel, accuracy[2]))
-    print(pair_of_emotions[1])
-    print(pair_of_emotions[2])
-    print(type)
-    print(kernel)
-    print(accuracy)
-    break 
+    # print("Look here")
+    # print(pair_of_emotions[1])
+    # print(pair_of_emotions[2])
+    # print(type)
+    # print(kernel)
+    # print(accuracy[2])
     }
   }
 }
@@ -78,3 +82,4 @@ trainData <- myData[-testRows,]
 
 # summary(obj)
 # plot(obj)
+
