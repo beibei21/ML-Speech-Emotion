@@ -11,6 +11,7 @@ source("audioDataSetSaver.R") # Run this file
 # data needs to be normalized first and targets label encoded
 myData = getData() ### this line is for debugging perposes only ###
 myData <- numericallyEncode(myData)
+myData$emotion <- as.factor(myData$emotion)
 # get test data and train data
 numRows = 1:nrow(myData) 
 print(paste("Number of rows: ", nrow(myData)))
@@ -48,7 +49,7 @@ network <- neuralnet(formula(trainData),
                      #algorithm = "backprop", # "rprop+" by default
                      act.fct = "tanh",
                      rep = 1,
-                     stepmax = 3500)
+                     stepmax = 2000)
 
 sillynet <- neuralnet(formula(trainData), data = trainData, learningrate = .1, 
                      hidden = c(10,8), linear.output = FALSE, # KEEP FALSE. WE ARE DOING CLASSIFICATION
@@ -73,7 +74,7 @@ plot(sillynet)
 print(network$result.matrix[1:3,])
 
 # see what the network looks like
-plot(network, rep = "best") # if network was run through repetition of models, plot only the best one with the least error
+plot(network) # if network was run through repetition of models, plot only the best one with the least error
 
 
 #get predictions
