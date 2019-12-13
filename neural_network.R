@@ -28,36 +28,70 @@ trainData <- myData[-testRows,]
 # - hidden = # of nodes in the layer
 # - act.fct = "logistic" used for smoothing the result
 # - linear.output = True -> run act.fct False -> not run act.fct
+# - linear.output should be TRUE if doing regression. FALSE if doing classification
 # - Classification, not regression
 # - learningrate = value of learning rate used on;y for back propagation
-network <- neuralnet(formula(trainData), data = trainData, learningrate = .1, 
-                     hidden = c(15,10,8), linear.output = TRUE)
+# - lifesign = "full" means have the neuralnet print everything its doing
+# - lifesign.step = integer. Given the learning steps, how often should we print the minimal threshold
+# - algorithm recieves a string of how the nn will calculate. 
+#    - by default -> "rprop+" which is resilient back propagation with or without weight bactracking (the plus or minus sign denotes with or without)
+# - threshold: the limit for the partial derivates computing the error function. Once surpassed, learning will stop
+# - stepmax is the maximum number of steps the learning can take before stopping
+# - rep is the number of repitions for the learning. Model will then return the best fitted model out of all the repitions
+network <- neuralnet(formula(trainData),
+                     data = trainData,
+                     hidden = c(25,20,13,8), 
+                     linear.output = FALSE, # KEEP FALSE. WE ARE DOING CLASSIFICATION
+                     threshold = 0.1,
+                     lifesign = "full", # for printing calculation results
+                     lifesign.step = 1, # given the learning steps, how often should we print the minimal threshold
+                     #algorithm = "backprop", # "rprop+" by default
+                     act.fct = "tanh",
+                     rep = 1,
+                     stepmax = 3500)
+
+sillynet <- neuralnet(formula(trainData), data = trainData, learningrate = .1, 
+                     hidden = c(10,8), linear.output = FALSE, # KEEP FALSE. WE ARE DOING CLASSIFICATION
+                     #threshold = 0.1,
+                     lifesign = "full", # for printing calculation results
+                     lifesign.step = 1, # given the learning steps, how often should we print the minimal threshold
+                     #algorithm = "backprop", # "rprop+" by default
+                     act.fct = "tanh") 
+
+one_node_goodness <- neuralnet(formula(trainData), data = trainData, learningrate = .1, 
+                      hidden = c(1), linear.output = FALSE, # KEEP FALSE. WE ARE DOING CLASSIFICATION
+                      #threshold = 0.1,
+                      lifesign = "full", # for printing calculation results
+                      lifesign.step = 1, # given the learning steps, how often should we print the minimal threshold
+                      #algorithm = "backprop", # "rprop+" by default
+                      act.fct = "tanh") 
+
+plot(one_node_goodness)
+
+plot(sillynet)
+# show the error, reached.threshold value, and the number of steps taken 
+print(network$result.matrix[1:3,])
 
 # see what the network looks like
-plot(network)
+plot(network, rep = "best") # if network was run through repetition of models, plot only the best one with the least error
 
 
 #get predictions
-network.results <- compute(network, testData[,-1]) # remove the emotion
+network.results <- predict(network, testData[,-1]) # remove the emotion
 
-# Or try this
-results <- data.frame(actual = testData$emotion, prediction = nn.results$net.result) 
-
-# View rounded results
-roundedResults <- sapply(results, round, digits = 0)
-roundedResultsdf <- data.frame(roundedResults)
-attach(roundedResultsdf)
-table(actual, prediction) # what is prediction
+# The actual is our emotion data in the test set
+# The prediction name is what the network.results were
+results <- data.frame(actual = testData$emotion, prediction = network.results) 
   
 # See the net result
-print(accuracy <- predictions$net.result)
+#print(accuracy <- network.results$net.result)
 #table(testData$, apply(predictions, 1, which.max))
-confusionMatrix <- table(pred = predictions, true = testData$emotion)
+confusionMatrix <- table(pred = network.results, true = testData$emotion)
 
-agreement <- predictions == testData$emotion
+agreement <- network.results == testData$emotion
 accuracy <- prop.table(table(agreement))
 
-print(confusionMatrix)
+print(confusionMatrix)v
 View(confusionMatrix)
 View(accuracy)
 print(accuracy)
