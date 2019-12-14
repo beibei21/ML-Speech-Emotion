@@ -11,8 +11,10 @@ source("audioDataSetSaver.R") # Run this file
 # data needs to be normalized first and targets label encoded
 myData = getData() ### this line is for debugging perposes only ###
 myData <- numericallyEncode(myData)
-myData$emotion <- as.factor(myData$emotion)
+myData$emotion[myData$emotion == as.factor("1")] <- "Sad"
 # get test data and train data
+myData$emotion[myData$emotion == as.factor("0")] <- "Happy"
+
 numRows = 1:nrow(myData) 
 print(paste("Number of rows: ", nrow(myData)))
 testRows <- sample(numRows, trunc(length(numRows) * 0.3))
@@ -49,7 +51,7 @@ network <- neuralnet(formula(trainData),
                      #algorithm = "backprop", # "rprop+" by default
                      act.fct = "tanh",
                      rep = 1,
-                     stepmax = 2000)
+                     stepmax = 2)
 
 sillynet <- neuralnet(formula(trainData), data = trainData, learningrate = .1, 
                      hidden = c(10,8), linear.output = FALSE, # KEEP FALSE. WE ARE DOING CLASSIFICATION
@@ -76,13 +78,14 @@ print(network$result.matrix[1:3,])
 # see what the network looks like
 plot(network) # if network was run through repetition of models, plot only the best one with the least error
 
+testData$emotion = as.character(testData$emotion)
 
 #get predictions
-network.results <- predict(network, testData[,-1]) # remove the emotion
+results <- predict(network, testData[,-1]) # remove the emotion
 
 # The actual is our emotion data in the test set
 # The prediction name is what the network.results were
-results <- data.frame(actual = testData$emotion, prediction = network.results) 
+results <- data.frame(actual = testData$emotion, prediction = results) 
   
 # See the net result
 #print(accuracy <- network.results$net.result)
