@@ -12,13 +12,13 @@ source("audioDataSetSaver.R") # Run this file
 # https://www.geeksforgeeks.org/classifying-data-using-support-vector-machinessvms-in-r/
 
 # Get the data 
-myData <- getData()
+myData <- getData("emotion_all.csv")
 myData = numericallyEncode(myData)
 #myData <- getData("emotion_all.csv")
 SVMTypes <- c("C-classification")
 kernels <- c('linear', 'polynomial', 'sigmoid', 'radial')
 results <- vector()
-
+myData$emotion <- myData$emtion
 numbers <- c(1:8)
 combinations <- combn(numbers, 2, simplify = FALSE)
 
@@ -47,7 +47,7 @@ print(pair_of_emotions)
       classifier = svm(formula = formula(trainData), 
                        data = trainData, 
                        type = type, 
-                       kernel = kernal,
+                       kernel = kernel,
                        gamma = .5, 
                        cost = 4) 
     
