@@ -12,7 +12,9 @@ source("audioDataSetSaver.R") # Run this file
 # https://www.geeksforgeeks.org/classifying-data-using-support-vector-machinessvms-in-r/
 
 # Get the data 
-myData <- getData("emotion_all.csv")
+myData <- getData()
+myData = numericallyEncode(myData)
+#myData <- getData("emotion_all.csv")
 SVMTypes <- c("C-classification")
 kernels <- c('linear', 'polynomial', 'sigmoid', 'radial')
 results <- vector()
